@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Economy Regression</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Indian Economy Regression</h1>
+    <form id="economyForm">
+        <label for="inflation">Inflation Rate:</label>
+        <input type="number" id="inflation" name="inflation" step="0.01" required>
+        <label for="unemployment">Unemployment Rate:</label>
+        <input type="number" id="unemployment" name="unemployment" step="0.01" required>
+        <button type="submit">Predict GDP Growth Rate</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('economyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Predicted GDP Growth Rate: ${data.prediction.toFixed(2)}%`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
