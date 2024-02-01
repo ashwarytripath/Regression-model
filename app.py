@@ -11,9 +11,9 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    inflation = float(request.form['inflation'])
-    unemployment = float(request.form['unemployment'])
-    prediction = model.predict([[inflation, unemployment]])[0]
+    data = request.form.to_dict()
+    input_data = pd.DataFrame(data, index=[0])
+    prediction = model.predict(input_data)[0]
     return jsonify({'prediction': prediction})
 
 if __name__ == '__main__':
