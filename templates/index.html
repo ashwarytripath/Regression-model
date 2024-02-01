@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indian Economy Regression</title>
+<style>
+    /* Add your CSS styling here */
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        margin: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+    #result {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <h1>Indian Economy Regression</h1>
+    <form id="economyForm">
+        <label for="inflation">Inflation Rate:</label>
+        <input type="number" id="inflation" name="inflation" step="0.01" required>
+        <label for="unemployment">Unemployment Rate:</label>
+        <input type="number" id="unemployment" name="unemployment" step="0.01" required>
+        <button type="submit">Predict GDP Growth Rate</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('economyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Predicted GDP Growth Rate: ${data.prediction.toFixed(2)}%`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
