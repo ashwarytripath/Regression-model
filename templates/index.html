@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDP Growth Rate Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>GDP Growth Rate Predictor</h1>
+    <form id="predictionForm">
+        <label for="gdp">GDP (current US$):</label>
+        <input type="number" id="gdp" name="GDP (current US$)" step="any" required>
+        <label for="gdp_per_capita">GDP per capita (current US$):</label>
+        <input type="number" id="gdp_per_capita" name="GDP per capita (current US$)" step="any" required>
+        <!-- Add other input fields here for other features -->
+        <button type="submit">Predict GDP Growth Rate</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Predicted GDP Growth Rate: ${data.prediction.toFixed(2)}%`;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
